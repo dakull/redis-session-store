@@ -152,6 +152,7 @@ class RedisSessionStore < ActionDispatch::Session::AbstractStore
     case serializer
     when :marshal then Marshal
     when :json    then JsonSerializer
+    when :msgpack then MsgpackSerializer
     when :hybrid  then HybridSerializer
     else serializer
     end
@@ -182,6 +183,17 @@ class RedisSessionStore < ActionDispatch::Session::AbstractStore
 
     def self.needs_migration?(value)
       value.start_with?(MARSHAL_SIGNATURE)
+    end
+  end
+
+  # Uses the fast msgpack gem to encode/decode session
+  class MsgpackSerializer
+    def self.load(value)
+      MessagePack.unpack(value)
+    end
+
+    def self.dump(value)
+      value.to_msgpack
     end
   end
 end

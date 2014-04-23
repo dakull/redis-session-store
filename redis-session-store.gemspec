@@ -19,6 +19,7 @@ Gem::Specification.new do |gem|
                 .match(/^  VERSION = '(.*)'/)[1]
 
   gem.add_runtime_dependency 'redis'
+  gem.add_runtime_dependency 'msgpack'
 
   gem.add_development_dependency 'fakeredis'
   gem.add_development_dependency 'rake'
